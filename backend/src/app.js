@@ -15,12 +15,9 @@ app.set('trust proxy', 1);
 app.disable('x-powered-by');
 
 // ---- Security headers ----
-// The API is called from another origin (Netlify), so allow cross-origin reads of its responses.
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 
 // ---- CORS ----
-// FRONTEND_URL may hold one or several origins separated by commas.
-// An origin is "https://site.netlify.app" - no path and no trailing slash.
 const normalizeOrigin = (value) => value.trim().replace(/\/+$/, '');
 
 const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
@@ -29,32 +26,31 @@ const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
   .filter(Boolean);
 
 if (process.env.NODE_ENV !== 'production') {
-  // Vite may be opened through either hostname while developing.
   ['http://localhost:5173', 'http://127.0.0.1:5173'].forEach((o) => {
     if (!allowedOrigins.includes(o)) allowedOrigins.push(o);
   });
 }
 
-app.use(
-  cors({
-    origin(origin, callback) {
-      // No Origin header = curl, Postman, server-to-server, health checks.
-      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
-      logger.warn(`Blocked request from origin: ${origin}`);
-      const error = new Error('Origin not allowed by CORS');
-      error.isCorsError = true;
-      return callback(error);
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type'],
-    maxAge: 600,
-  })
-);
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    logger.warn(`Blocked request from origin: ${origin}`);
+    const error = new Error('Origin not allowed by CORS');
+    error.isCorsError = true;
+    return callback(error);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+  maxAge: 600,
+};
 
-// ---- Body parsing with a size limit ----
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+// ---- Body parsing ----
 app.use(express.json({ limit: '10kb' }));
 
-// ---- Simple request log (method, path, status, time). No bodies. ----
+// ---- Logging ----
 app.use((req, res, next) => {
   const start = Date.now();
   res.on('finish', () => {
