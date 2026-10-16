@@ -2,16 +2,17 @@ import { useRef, useState } from 'react';
 import { EMPTY_STUDENT, MAX_SEMESTER, MIN_SEMESTER, toPayload, validateStudent } from '../utils/validation.js';
 
 const DEPARTMENTS = [
-  'Computer Science',
-  'Information Technology',
-  'Electronics',
+  'Computer Engineering',
   'Mechanical Engineering',
   'Civil Engineering',
   'Electrical Engineering',
-  'Business Administration',
 ];
 
-const SEMESTERS = Array.from({ length: MAX_SEMESTER - MIN_SEMESTER + 1 }, (_, i) => MIN_SEMESTER + i);
+// Capped at a maximum of 8 semesters without breaking original bounds
+const SEMESTERS = Array.from(
+  { length: Math.min(MAX_SEMESTER, 8) - MIN_SEMESTER + 1 },
+  (_, i) => MIN_SEMESTER + i
+);
 
 function Field({ id, label, required, error, hint, children }) {
   const describedBy = [error ? `${id}-error` : null, hint ? `${id}-hint` : null].filter(Boolean).join(' ');
@@ -36,11 +37,6 @@ function Field({ id, label, required, error, hint, children }) {
   );
 }
 
-/**
- * One form used for both "Add" and "Edit".
- * onSubmit(payload) must return a promise; if it throws an ApiError the
- * message and field errors are shown here.
- */
 export default function StudentForm({
   idPrefix,
   initialValues = EMPTY_STUDENT,

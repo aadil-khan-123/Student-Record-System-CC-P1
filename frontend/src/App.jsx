@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 import Layout from './components/Layout.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import AddStudent from './components/AddStudent.jsx';
@@ -7,6 +8,7 @@ import SearchBar from './components/SearchBar.jsx';
 import StudentTable from './components/StudentTable.jsx';
 import ConfirmDialog from './components/ConfirmDialog.jsx';
 import Notification from './components/Notification.jsx';
+import LandingPage from './components/LandingPage.jsx';
 import {
   createStudent,
   deleteStudent,
@@ -14,7 +16,8 @@ import {
   updateStudent,
 } from './services/api.js';
 
-export default function App() {
+// The existing dashboard workspace
+function DashboardView() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
@@ -26,8 +29,6 @@ export default function App() {
 
   const dismissNotice = useCallback(() => setNotice(null), []);
 
-  // Fetches the list from the real backend.
-  // `silent` keeps the table visible while refreshing after a change.
   const loadStudents = useCallback(async ({ silent = false } = {}) => {
     if (!silent) setLoading(true);
     try {
@@ -49,25 +50,33 @@ export default function App() {
     const query = search.trim().toLowerCase();
     if (!query) return students;
     return students.filter((s) =>
-      [s.studentId, s.name, s.email, s.department].some((field) => field.toLowerCase().includes(query))
+      [s.studentId, s.name, s.email, s.department].some((field) =>
+        field.toLowerCase().includes(query)
+      )
     );
   }, [students, search]);
 
   const handleCreate = async (payload) => {
     const response = await createStudent(payload);
-    setNotice({ type: 'success', message: response.message || 'Student added successfully.' });
+    setNotice({
+      type: 'success',
+      message: response.message || 'Student added successfully.',
+    });
     await loadStudents({ silent: true });
   };
 
   const handleUpdate = async (id, payload) => {
     try {
       const response = await updateStudent(id, payload);
-      setNotice({ type: 'success', message: response.message || 'Student updated successfully.' });
+      setNotice({
+        type: 'success',
+        message: response.message || 'Student updated successfully.',
+      });
       setEditing(null);
       await loadStudents({ silent: true });
     } catch (err) {
       if (err.status === 404) await loadStudents({ silent: true });
-      throw err; // the form shows the message
+      throw err;
     }
   };
 
@@ -75,7 +84,10 @@ export default function App() {
     setDeleteBusy(true);
     try {
       const response = await deleteStudent(deleting._id);
-      setNotice({ type: 'success', message: response.message || 'Student deleted successfully.' });
+      setNotice({
+        type: 'success',
+        message: response.message || 'Student deleted successfully.',
+      });
     } catch (err) {
       setNotice({ type: 'error', message: err.message });
     } finally {
@@ -87,6 +99,46 @@ export default function App() {
 
   return (
     <Layout>
+      {/* Top action bar: aligns button to the top-right in a modern box button */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginBottom: '1rem',
+        }}
+      >
+        <Link
+          to="/"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+            padding: '0.55rem 1.15rem',
+            backgroundColor: '#ffffff',
+            color: '#1e293b',
+            border: '1px solid #cbd5e1',
+            borderRadius: '8px',
+            fontSize: '0.875rem',
+            fontWeight: '600',
+            textDecoration: 'none',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
+            transition: 'all 0.15s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#f8fafc';
+            e.currentTarget.style.borderColor = '#94a3b8';
+            e.currentTarget.style.boxShadow = '0 3px 6px rgba(0, 0, 0, 0.12)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#ffffff';
+            e.currentTarget.style.borderColor = '#cbd5e1';
+            e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.08)';
+          }}
+        >
+          <span>←</span> Back to Home
+        </Link>
+      </div>
+
       <Notification notice={notice} onDismiss={dismissNotice} />
 
       <Dashboard students={students} loading={loading} />
@@ -119,7 +171,11 @@ export default function App() {
           {loadError && students.length > 0 && (
             <p className="inline-warning" role="alert">
               Could not refresh the list: {loadError}{' '}
-              <button type="button" className="link-button" onClick={() => loadStudents({ silent: true })}>
+              <button
+                type="button"
+                className="link-button"
+                onClick={() => loadStudents({ silent: true })}
+              >
                 Retry
               </button>
             </p>
@@ -127,7 +183,13 @@ export default function App() {
         </section>
       </div>
 
-      {editing && <EditStudent student={editing} onSave={handleUpdate} onCancel={() => setEditing(null)} />}
+      {editing && (
+        <EditStudent
+          student={editing}
+          onSave={handleUpdate}
+          onCancel={() => setEditing(null)}
+        />
+      )}
 
       {deleting && (
         <ConfirmDialog
@@ -138,5 +200,14 @@ export default function App() {
         />
       )}
     </Layout>
+  );
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/dashboard" element={<DashboardView />} />
+    </Routes>
   );
 }

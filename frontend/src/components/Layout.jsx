@@ -4,17 +4,13 @@ export default function Layout({ children }) {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <header className="site-header">
-        <div className="container">
-          <h1>Student Information Management System</h1>
-          <p>Register, search and maintain student records.</p>
-        </div>
-      </header>
-      <main id="main" className="container">
+      <main id="main" className="container" style={{ paddingTop: '2rem' }}>
         {children}
       </main>
       <footer className="site-footer">
-        <div className="container">Cloud Computing CA2 &middot; React on Netlify, Express on Render, MongoDB Atlas</div>
+        <div className="container">
+          Cloud Computing CA2 &middot; React on Netlify, Express on Render, MongoDB Atlas
+        </div>
       </footer>
     </>
   );
