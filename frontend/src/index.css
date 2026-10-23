@@ -1,20 +1,21 @@
 /* ---------- Design tokens ---------- */
 :root {
-  --ink: #0f172a;           /* Deep slate text */
-  --ink-soft: #334155;      /* Secondary dark text */
-  --muted: #64748b;         /* Muted gray text */
+  color-scheme: dark;
+  --ink: #f8fafc;           /* Default light text */
+  --ink-soft: #cbd5e1;      /* Secondary light text */
+  --muted: #94a3b8;         /* Muted slate text */
   --campus: #2563eb;        /* Aesthetic Royal Blue accent */
   --campus-dark: #1d4ed8;   /* Darker hover blue */
   --campus-tint: #eff6ff;   /* Softest icy blue fill */
-  --chalk: #ffffff;         /* Pure clean white background */
-  --surface: #ffffff;       /* Pure white panels/cards */
-  --line: #e2e8f0;          /* Clean border lines */
+  --chalk: #0f172a;         /* Base dark background */
+  --surface: #1e293b;       /* Dark panels/cards */
+  --line: #334155;          /* Subtle border lines */
   --amber: #f59e0b;         /* Modern focus amber */
   --danger: #ef4444;        /* Clean crimson red */
-  --danger-tint: #fef2f2;   /* Soft red background */
+  --danger-tint: rgba(239, 68, 68, 0.12); /* Soft red background */
   --radius: 12px;
   --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-  --shadow-dialog: 0 20px 45px rgba(15, 23, 42, 0.15);
+  --shadow-dialog: 0 20px 45px rgba(0, 0, 0, 0.5);
 }
 
 *,
@@ -25,6 +26,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  background: #0f172a;
 }
 
 body {
@@ -32,8 +34,8 @@ body {
   font-family: var(--font);
   font-size: 1rem;
   line-height: 1.5;
-  color: var(--ink);
-  background: var(--chalk);
+  color: #f8fafc;
+  background: #0f172a;
 }
 
 h1,
@@ -91,7 +93,7 @@ select {
 
 /* ---------- Header / footer ---------- */
 .site-header {
-  background: #ffffff;
+  background: var(--chalk);
   color: var(--ink);
   padding: 1.5rem 0;
   border-bottom: 1px solid var(--line);
@@ -115,7 +117,7 @@ main.container {
   padding: 1.5rem 0;
   color: var(--muted);
   font-size: 0.875rem;
-  background: #ffffff;
+  background: var(--chalk);
 }
 
 /* ---------- Dashboard band ---------- */
@@ -130,7 +132,7 @@ main.container {
   border-left: 6px solid var(--campus);
   border-radius: var(--radius);
   padding: 1.25rem 1.75rem;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 .dash-main {
   display: flex;
@@ -195,7 +197,7 @@ main.container {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 .panel-title {
   font-size: 1.15rem;
@@ -227,23 +229,26 @@ main.container {
   width: 100%;
   min-height: 42px;
   padding: 0.55rem 0.8rem;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
+  background: #0f172a;
+  border: 1px solid #475569;
   border-radius: 8px;
   color: var(--ink);
   transition: border-color 0.15s, box-shadow 0.15s;
 }
+.input::placeholder {
+  color: #64748b;
+}
 .input:hover {
-  border-color: #94a3b8;
+  border-color: #64748b;
 }
 .input:focus {
   outline: none;
   border-color: var(--campus);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35);
 }
 .field-invalid .input {
   border-color: var(--danger);
-  background: #fffafa;
+  background: rgba(239, 68, 68, 0.08);
 }
 .field-hint {
   margin-top: 0.25rem;
@@ -274,7 +279,7 @@ main.container {
 }
 .form-error {
   background: var(--danger-tint);
-  border: 1px solid #fecaca;
+  border: 1px solid rgba(239, 68, 68, 0.4);
   color: var(--danger);
   border-radius: 8px;
   padding: 0.65rem 0.85rem;
@@ -313,13 +318,13 @@ main.container {
   border-color: var(--campus-dark);
 }
 .btn-ghost {
-  background: #fff;
+  background: var(--surface);
   border-color: var(--line);
   color: var(--ink-soft);
 }
 .btn-ghost:hover:not(:disabled) {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: #334155;
+  border-color: #475569;
   color: var(--ink);
 }
 .btn-danger {
@@ -330,8 +335,8 @@ main.container {
   background: #dc2626;
 }
 .btn-danger-ghost {
-  background: #fff;
-  border-color: #fecaca;
+  background: transparent;
+  border-color: rgba(239, 68, 68, 0.45);
   color: var(--danger);
 }
 .btn-danger-ghost:hover:not(:disabled) {
@@ -383,7 +388,7 @@ main.container {
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fff;
+  background: var(--surface);
 }
 .table {
   width: 100%;
@@ -392,7 +397,7 @@ main.container {
 }
 .table th {
   text-align: left;
-  background: #f8fafc;
+  background: #162033;
   color: var(--muted);
   font-weight: 600;
   font-size: 0.8rem;
@@ -412,7 +417,7 @@ main.container {
   border-bottom: 0;
 }
 .table tbody tr:hover {
-  background: #f8fafc;
+  background: #273449;
 }
 .num {
   text-align: center !important;
@@ -468,8 +473,8 @@ main.container {
     border-radius: 8px;
     padding: 0.5rem 1rem;
     margin-bottom: 0.9rem;
-    background: #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    background: var(--surface);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   }
   .table td.break,
   .table td.strong {
@@ -506,7 +511,7 @@ main.container {
   border: 1px dashed var(--line);
   border-radius: 8px;
   color: var(--muted);
-  background: #ffffff;
+  background: var(--surface);
 }
 .state h3 {
   color: var(--ink);
@@ -517,7 +522,7 @@ main.container {
   margin-top: 1rem;
 }
 .state-error {
-  border-color: #fecaca;
+  border-color: rgba(239, 68, 68, 0.4);
   background: var(--danger-tint);
 }
 .state-error h3 {
@@ -530,7 +535,7 @@ main.container {
   border-radius: 8px;
   color: var(--danger);
   font-size: 0.88rem;
-  border: 1px solid #fee2e2;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 /* ---------- Loader ---------- */
@@ -588,11 +593,11 @@ main.container {
   border-radius: 8px;
   font-weight: 500;
   font-size: 0.9rem;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
   animation: toast-in 0.2s ease-out;
 }
 .toast-success {
-  background: #0f172a;
+  background: #334155;
   color: #fff;
 }
 .toast-error {
@@ -632,11 +637,11 @@ main.container {
   border-radius: 12px;
   box-shadow: var(--shadow-dialog);
   color: var(--ink);
-  background: #ffffff;
+  background: var(--surface);
   overflow: auto;
 }
 .dialog::backdrop {
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(2, 6, 23, 0.7);
   backdrop-filter: blur(2px);
 }
 .dialog-body {
