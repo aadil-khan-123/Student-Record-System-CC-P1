@@ -1,5 +1,13 @@
 import Loader from './Loader.jsx';
 
+function initials(name = '') {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '?';
+  const first = parts[0][0];
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
+  return (first + last).toUpperCase();
+}
+
 export default function StudentTable({ students, totalCount, searchText, loading, error, onRetry, onEdit, onDelete }) {
   if (loading) {
     return <Loader block label="Loading students..." />;
@@ -58,17 +66,24 @@ export default function StudentTable({ students, totalCount, searchText, loading
           {students.map((student) => (
             <tr key={student._id}>
               <td data-label="Student ID" className="mono">
-                {student.studentId}
+                <span className="id-chip">{student.studentId}</span>
               </td>
               <td data-label="Name" className="strong">
-                {student.name}
+                <span className="person">
+                  <span className="avatar" aria-hidden="true">
+                    {initials(student.name)}
+                  </span>
+                  <span>{student.name}</span>
+                </span>
               </td>
               <td data-label="Email" className="break">
                 {student.email}
               </td>
-              <td data-label="Department">{student.department}</td>
+              <td data-label="Department">
+                <span className="badge">{student.department}</span>
+              </td>
               <td data-label="Semester" className="num">
-                {student.semester}
+                <span className="sem-badge">{student.semester}</span>
               </td>
               <td data-label="Contact">{student.contact || '-'}</td>
               <td className="actions">

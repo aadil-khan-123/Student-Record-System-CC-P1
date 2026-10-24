@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import AddStudent from './components/AddStudent.jsx';
@@ -99,44 +99,10 @@ function DashboardView() {
 
   return (
     <Layout>
-      {/* Top action bar: aligns button to the top-right in a modern box button */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          marginBottom: '1rem',
-        }}
-      >
-        <Link
-          to="/"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-            padding: '0.55rem 1.15rem',
-            backgroundColor: '#ffffff',
-            color: '#1e293b',
-            border: '1px solid #cbd5e1',
-            borderRadius: '8px',
-            fontSize: '0.875rem',
-            fontWeight: '600',
-            textDecoration: 'none',
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
-            transition: 'all 0.15s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#f8fafc';
-            e.currentTarget.style.borderColor = '#94a3b8';
-            e.currentTarget.style.boxShadow = '0 3px 6px rgba(0, 0, 0, 0.12)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = '#ffffff';
-            e.currentTarget.style.borderColor = '#cbd5e1';
-            e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.08)';
-          }}
-        >
-          <span>←</span> Back to Home
-        </Link>
+      <div className="page-head">
+        <p className="page-eyebrow">Dashboard</p>
+        <h1 className="page-title">Student records</h1>
+        <p className="page-sub">Add, search, and manage every student in one place.</p>
       </div>
 
       <Notification notice={notice} onDismiss={dismissNotice} />
