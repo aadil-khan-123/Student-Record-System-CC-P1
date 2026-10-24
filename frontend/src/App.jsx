@@ -9,6 +9,7 @@ import StudentTable from './components/StudentTable.jsx';
 import ConfirmDialog from './components/ConfirmDialog.jsx';
 import Notification from './components/Notification.jsx';
 import LandingPage from './components/LandingPage.jsx';
+import AboutPage from './components/AboutPage.jsx';
 import {
   createStudent,
   deleteStudent,
@@ -173,6 +174,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/about" element={<AboutPage />} />
       <Route path="/dashboard" element={<DashboardView />} />
     </Routes>
   );

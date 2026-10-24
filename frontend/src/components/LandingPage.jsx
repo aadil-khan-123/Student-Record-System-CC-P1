@@ -159,7 +159,7 @@ export default function LandingPage() {
           color: #fff;
         }
         .lp-nav-links { display: flex; align-items: center; gap: 1.5rem; }
-        .lp-nav-link { background: none; border: 0; color: #cbd5e1; font: inherit; font-size: 0.93rem; font-weight: 500; cursor: pointer; padding: 0.25rem 0; }
+        .lp-nav-link { background: none; border: 0; color: #cbd5e1; font: inherit; font-size: 0.93rem; font-weight: 500; cursor: pointer; padding: 0.25rem 0; text-decoration: none; }
         .lp-nav-link:hover { color: #fff; }
 
         /* Buttons */
@@ -199,6 +199,8 @@ export default function LandingPage() {
         .lp-cta-row { display: flex; flex-wrap: wrap; gap: 0.9rem; }
         .lp-byline { margin-top: 1.75rem; color: #64748b; font-size: 0.88rem; }
         .lp-byline strong { color: #cbd5e1; font-weight: 600; }
+        .lp-byline a { color: #a5b4fc; text-decoration: none; font-weight: 600; margin-left: 0.5rem; }
+        .lp-byline a:hover { text-decoration: underline; }
 
         /* Preview card */
         .lp-preview {
@@ -261,16 +263,19 @@ export default function LandingPage() {
         .lp-final { margin: 4.5rem 0 3rem; padding: 3rem 1.5rem; text-align: center; border-radius: 22px; background: linear-gradient(135deg, rgba(99,102,241,0.28), rgba(168,85,247,0.22) 55%, rgba(244,114,182,0.18)); border: 1px solid rgba(165,180,252,0.28); }
         .lp-final .lp-sub { margin: 0 auto 1.75rem; }
         .lp-final .lp-h2 { margin-bottom: 0.7rem; }
+        .lp-final-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; }
 
         /* Footer */
         .lp-footer { border-top: 1px solid rgba(255,255,255,0.07); padding: 1.75rem 0; color: #64748b; font-size: 0.86rem; }
         .lp-footer-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem 1.5rem; }
+        .lp-foot-link { color: #a5b4fc; text-decoration: none; font-weight: 600; }
+        .lp-foot-link:hover { text-decoration: underline; }
 
         @media (max-width: 640px) {
           .lp-nav-links .lp-nav-link { display: none; }
           .lp-hero { padding-top: 3rem; }
           .lp-btn { width: 100%; }
-          .lp-cta-row { flex-direction: column; }
+          .lp-cta-row, .lp-final-actions { flex-direction: column; }
           .lp-nav .lp-btn { width: auto; }
           .lp-footer-row { justify-content: center; text-align: center; }
         }
@@ -302,6 +307,9 @@ export default function LandingPage() {
               <button type="button" className="lp-nav-link" onClick={scrollToFeatures}>
                 Features
               </button>
+              <Link to="/about" className="lp-nav-link">
+                About
+              </Link>
               <Link to="/dashboard" className="lp-btn lp-btn-primary lp-btn-sm">
                 Open Dashboard <span className="lp-arrow">→</span>
               </Link>
@@ -329,12 +337,16 @@ export default function LandingPage() {
                   <Link to="/dashboard" className="lp-btn lp-btn-primary">
                     Launch Dashboard <span className="lp-arrow">→</span>
                   </Link>
+                  <Link to="/about" className="lp-btn lp-btn-ghost">
+                    About me
+                  </Link>
                   <button type="button" className="lp-btn lp-btn-ghost" onClick={scrollToFeatures}>
                     Explore features
                   </button>
                 </div>
                 <p className="lp-byline">
                   Built by <strong>Aadil Shakil Khan</strong>
+                  <Link to="/about">Read more →</Link>
                 </p>
               </div>
 
@@ -432,9 +444,14 @@ export default function LandingPage() {
             <section className="lp-final">
               <h2 className="lp-h2">Ready to organize your student records?</h2>
               <p className="lp-sub">Jump into the dashboard and start managing records right away.</p>
-              <Link to="/dashboard" className="lp-btn lp-btn-primary">
-                Go to Dashboard <span className="lp-arrow">→</span>
-              </Link>
+              <div className="lp-final-actions">
+                <Link to="/dashboard" className="lp-btn lp-btn-primary">
+                  Go to Dashboard <span className="lp-arrow">→</span>
+                </Link>
+                <Link to="/about" className="lp-btn lp-btn-ghost">
+                  Meet the developer
+                </Link>
+              </div>
             </section>
           </div>
         </main>
@@ -443,7 +460,9 @@ export default function LandingPage() {
         <footer className="lp-footer">
           <div className="lp-wrap lp-footer-row">
             <span>© 2026 Student Record System · Built with the MERN stack</span>
-            <span>By Aadil Shakil Khan</span>
+            <Link to="/about" className="lp-foot-link">
+              About the developer
+            </Link>
           </div>
         </footer>
       </div>

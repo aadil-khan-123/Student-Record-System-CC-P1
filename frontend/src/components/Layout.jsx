@@ -19,9 +19,14 @@ export default function Layout({ children }) {
             </span>
             <span>Student Record System</span>
           </Link>
-          <Link to="/" className="btn btn-ghost btn-small">
-            <span aria-hidden="true">←</span> Back to Home
-          </Link>
+          <nav style={{ display: 'flex', gap: '0.6rem' }} aria-label="Primary">
+            <Link to="/about" className="btn btn-ghost btn-small">
+              About
+            </Link>
+            <Link to="/" className="btn btn-ghost btn-small">
+              <span aria-hidden="true">←</span> Home
+            </Link>
+          </nav>
         </div>
       </header>
 
