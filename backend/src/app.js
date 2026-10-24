@@ -10,37 +10,62 @@ const logger = require('./utils/logger');
 
 const app = express();
 
-// Render (and most hosts) sit behind a proxy.
+// Render (and most cloud hosts) sit behind a reverse proxy.
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
 
 // ---- Security headers ----
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 
-// ---- CORS ----
+// ---- CORS Configuration ----
 const normalizeOrigin = (value) => value.trim().replace(/\/+$/, '');
 
-const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
+const configuredOrigins = (process.env.FRONTEND_URL || '')
   .split(',')
   .map(normalizeOrigin)
   .filter(Boolean);
 
-if (process.env.NODE_ENV !== 'production') {
-  ['http://localhost:5173', 'http://127.0.0.1:5173'].forEach((o) => {
-    if (!allowedOrigins.includes(o)) allowedOrigins.push(o);
-  });
-}
+const defaultAllowedOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:3000',
+  'https://student-record-system-cc-p1.vercel.app',
+  'https://student-record-by-aadil-khan.netlify.app',
+];
 
 const corsOptions = {
   origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    // Allow non-browser requests (e.g. Render health checks, Postman, curl)
+    if (!origin) return callback(null, true);
+
+    const cleanOrigin = normalizeOrigin(origin);
+
+    // If wildcard is enabled on Render
+    if (process.env.FRONTEND_URL === '*') {
+      return callback(null, true);
+    }
+
+    // Check explicitly configured origins or default list
+    if (
+      configuredOrigins.includes(cleanOrigin) ||
+      defaultAllowedOrigins.includes(cleanOrigin)
+    ) {
+      return callback(null, true);
+    }
+
+    // Allow any preview/production deployments on Vercel and Netlify
+    if (/\.vercel\.app$/.test(cleanOrigin) || /\.netlify\.app$/.test(cleanOrigin)) {
+      return callback(null, true);
+    }
+
     logger.warn(`Blocked request from origin: ${origin}`);
     const error = new Error('Origin not allowed by CORS');
     error.isCorsError = true;
     return callback(error);
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
   maxAge: 600,
 };
 
