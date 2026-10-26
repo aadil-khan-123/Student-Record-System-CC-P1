@@ -297,11 +297,11 @@ export default function LandingPage() {
         {/* Navigation */}
         <header className="lp-nav">
           <div className="lp-wrap lp-nav-row">
-            <Link to="/" className="lp-brand" aria-label="Student Record System home">
+            <Link to="/" className="lp-brand" aria-label="Record Manager home">
               <span className="lp-brand-mark">
                 <IconCap />
               </span>
-              <span>Student Record System</span>
+              <span>Record Manager</span>
             </Link>
             <nav className="lp-nav-links" aria-label="Primary">
               <button type="button" className="lp-nav-link" onClick={scrollToFeatures}>
@@ -357,7 +357,7 @@ export default function LandingPage() {
                     <span className="lp-bar-dot" style={{ background: '#f87171' }} />
                     <span className="lp-bar-dot" style={{ background: '#fbbf24' }} />
                     <span className="lp-bar-dot" style={{ background: '#34d399' }} />
-                    <span className="lp-bar-title">Student Record System · Dashboard</span>
+                    <span className="lp-bar-title">Record Manager · Dashboard</span>
                   </div>
                   <div className="lp-preview-content">
                     <div className="lp-tiles">
@@ -459,7 +459,7 @@ export default function LandingPage() {
         {/* Footer */}
         <footer className="lp-footer">
           <div className="lp-wrap lp-footer-row">
-            <span>© 2026 Student Record System · Built with the MERN stack</span>
+            <span>© 2026 Record Manager · Built with the MERN stack</span>
             <Link to="/about" className="lp-foot-link">
               About the developer
             </Link>
