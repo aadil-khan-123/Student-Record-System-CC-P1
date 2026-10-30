@@ -225,7 +225,7 @@ export default function AboutPage() {
                   <p className="ab-tagline">{PROFILE.tagline}</p>
                   <div className="ab-actions">
                     <a className="ab-btn ab-btn-primary" href={`mailto:${PROFILE.email}`}>
-                      <MailIcon /> Email me
+                      <MailIcon /> Email me · {PROFILE.email}
                     </a>
                     <a className="ab-btn ab-btn-ghost" href={PROFILE.github} target="_blank" rel="noopener noreferrer">
                       <GithubIcon /> GitHub
